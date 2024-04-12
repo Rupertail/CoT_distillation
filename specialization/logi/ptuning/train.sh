@@ -10,7 +10,7 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 python main.py \
     --prompt_column prompt \
     --response_column content \
     --overwrite_cache \
-    --model_name_or_path E:\\LLM\\ChatGLM\\chatglm2-6b-int4\\ChatGLM2-6B-main\\model \
+    --model_name_or_path /gpfsdata/home/wangjunzhe/CoT_distillation/ChatGLM2-6B-main/model \
     --output_dir ../output/logi-normal-pt-$PRE_SEQ_LEN-$LR \
     --overwrite_output_dir \
     --max_source_length 1024 \
