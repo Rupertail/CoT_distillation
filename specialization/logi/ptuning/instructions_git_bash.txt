@@ -1,0 +1,2 @@
+conda activate chatglm2
+sh train.sh/train_local.sh
