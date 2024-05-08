@@ -1,0 +1,5 @@
+peft>=0.4.0
+trl==0.7.2
+sentencepiece
+rouge-chinese
+pydantic==1.10.11

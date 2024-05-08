@@ -9,7 +9,7 @@ def load_model(version: str, checkpoint: int):
     if version == 'test':
         type_path = os.path.join(original_path, 'logi-test-pt-32-2e-2')
     elif version == 'normal':
-        type_path = os.path.join(original_path, 'logi-normal-pt-32-2e-2')
+        type_path = os.path.join(original_path, 'logi-normal-pt-1024-1e-3')
     elif version == 'classified':
         type_path = os.path.join(original_path, 'logi-classified-pt-32-2e-2')
     else:
@@ -17,7 +17,7 @@ def load_model(version: str, checkpoint: int):
     CHECKPOINT_PATH = os.path.join(type_path, 'checkpoint-'+str(checkpoint))
     # 载入Tokenizer
     tokenizer = AutoTokenizer.from_pretrained("E:\\LLM\\ChatGLM\\chatglm2-6b-int4\\ChatGLM2-6B-main\\model", trust_remote_code=True)
-    config = AutoConfig.from_pretrained("E:\\LLM\\ChatGLM\\chatglm2-6b-int4\\ChatGLM2-6B-main\\model", trust_remote_code=True, pre_seq_len=32)
+    config = AutoConfig.from_pretrained("E:\\LLM\\ChatGLM\\chatglm2-6b-int4\\ChatGLM2-6B-main\\model", trust_remote_code=True, pre_seq_len=1024)
     model = AutoModel.from_pretrained("E:\\LLM\\ChatGLM\\chatglm2-6b-int4\\ChatGLM2-6B-main\\model", config=config, trust_remote_code=True)
     prefix_state_dict = torch.load(os.path.join(CHECKPOINT_PATH, "pytorch_model.bin"))
     new_prefix_state_dict = {}

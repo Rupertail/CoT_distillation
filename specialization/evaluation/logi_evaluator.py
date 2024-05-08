@@ -1,5 +1,6 @@
 import re
 
+
 def get_ans(text: str):
     """extract option from model's answer text"""
     sm = special_match(text)

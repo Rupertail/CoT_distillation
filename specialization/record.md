@@ -14,21 +14,149 @@
 | glm-4       | LogiQA-test   | zs-CoT         | 0.97 | 0.737    |
 | glm-4       | LogiQA-train  | zs-CoT         | 0.95 | 0.7365   |
 
-##### student (Chatglm2-6B)
+##### student-original
 
-| version  | dataset      | prompt | T    | accuracy |
-| -------- | ------------ | ------ | ---- | -------- |
-| original | math23k-test | zs-CoT | 0.97 | 0.461    |
-| original | math23k-test | (None) | 0.97 | 0.465    |
-| original | math23k-test | fs-CoT | 0.97 | 0.386    |
-| original | LogiQA-test  | zs-CoT | 0.95 | 0.4103   |
-| original | LogiQA-test  | (None) | 0.95 | 0.4247   |
+| dataset      | prompt | T    | accuracy   |
+| ------------ | ------ | ---- | ---------- |
+| math23k-test | zs-CoT | 0.97 | 0.461      |
+| math23k-test | (None) | 0.97 | **0.465**  |
+| math23k-test | fs-CoT | 0.97 | 0.386      |
+| LogiQA-test  | zs-CoT | 0.95 | 0.4103     |
+| LogiQA-test  | (None) | 0.95 | **0.4247** |
 
-##### logi-normal-pt-32-2e-2
+##### student-ptuning
 
-![image-20240406102403485](C:\Users\王俊哲\AppData\Roaming\Typora\typora-user-images\image-20240406102403485.png)
+| dataset | Learning_Rate | checkpoint | loss   | prompt | accuracy   |
+| ------- | ------------- | ---------- | ------ | ------ | ---------- |
+| LogiQA  | 1e-3 (0.001)  | 1500 (1.8) | 1.1432 | zs-CoT | 0.3996     |
+| LogiQA  | 1e-3 (0.001)  | 2500 (3.0) | 1.1673 | zs-CoT | **0.4103** |
+| LogiQA  | 2e-4 (0.0002) | 3000 (3.6) | 1.1706 | zs-CoT | 0.4034     |
 
-![image-20240407124139282](C:\Users\王俊哲\AppData\Roaming\Typora\typora-user-images\image-20240407124139282.png)
+##### student-logi-lora（原始训练数据）
+
+| dataset | Learning_Rate  | checkpoint | loss  | prompt | precision | accuracy   |
+| ------- | -------------- | ---------- | ----- | ------ | --------- | ---------- |
+| LogiQA  | 1e-5 (0.00001) | 2500 (3.0) | 1.055 | zs-CoT | fp16      | 0.4191     |
+| LogiQA  | 5e-5 (0.00005) | 2500 (3.0) | 0.997 | zs-CoT | fp16      | 0.4310     |
+| LogiQA  | 5e-5 (0.00005) | 2500 (3.0) | 0.997 | (None) | fp16      | 0.4272     |
+| LogiQA  | 5e-5 (0.00005) | 2500 (3.0) | 0.997 | zs-CoT | int8      | 0.4178     |
+| LogiQA  | 5e-5 (0.00005) | 2500 (3.0) | 0.997 | (None) | int8      | 0.4435     |
+| LogiQA  | 2e-4 (0.00020) | 2500 (3.0) | 0.926 | zs-CoT | fp16      | 0.4410     |
+| LogiQA  | 2e-4 (0.00020) | 2500 (3.0) | 0.926 | (None) | fp16      | 0.4460     |
+| LogiQA  | 2e-4 (0.00020) | 2500 (3.0) | 0.926 | zs-CoT | int8      |            |
+| LogiQA  | 2e-4 (0.00020) | 2500 (3.0) | 0.926 | (None) | int8      | 0.4410     |
+| LogiQA  | 5e-4 (0.00050) | 2500 (3.0) | 0.868 | zs-CoT | fp16      | **0.4529** |
+| LogiQA  | 5e-4 (0.00050) | 2500 (3.0) | 0.868 | (None) | fp16      | 0.4410     |
+| LogiQA  | 2e-3 (0.00200) | 2500 (3.0) | 0.871 | zs-CoT | fp16      | 0.4529     |
+| LogiQA  | 2e-3 (0.00200) | 2500 (3.0) | 0.871 | (None) | fp16      | 0.4391     |
+| LogiQA  | 5e-3 (0.00500) | ——         | ∞     | ——     | ——        | ——         |
+
+**student-logi-lora（筛选训练数据）**
+
+| dataset | Learning_Rate  | checkpoint   | loss  | prompt | precision | accuracy   |
+| ------- | -------------- | ------------ | ----- | ------ | --------- | ---------- |
+| LogiQA  | 5e-5 (0.00005) | 1500 (4.26)  | 0.989 | (None) | fp16      | 0.4285     |
+| LogiQA  | 5e-5 (0.00005) | 1500 (4.26)  | 0.989 | (None) | int8      | 0.4429     |
+| LogiQA  | 2e-4 (0.00020) | 900 (2.56)   | 0.960 | (None) | fp16      | 0.4404     |
+| LogiQA  | 2e-4 (0.00020) | 900 (2.56)   | 0.960 | (None) | int8      | 0.4467     |
+| LogiQA  | 2e-4 (0.00020) | 4000 (11.39) | 0.671 | (None) | fp16      | 0.4454     |
+| LogiQA  | 2e-4 (0.00020) | 5000 (14.20) | 0.623 | (None) | fp16      | 0.4580     |
+| LogiQA  | 2e-4 (0.00020) | 7000 (19.89) | 0.624 | (None) | fp16      | 0.4385     |
+| LogiQA  | 2e-4 (0.00020) | 7000 (19.89) | 0.624 | (None) | int8      | 0.4454     |
+| LogiQA  | 5e-4 (0.00050) | 2500 (7.10)  | 0.635 | (None) | fp16      | 0.4592     |
+| LogiQA  | 5e-4 (0.00050) | 3500 (9.94)  | 0.613 | zs-CoT | fp16      | 0.4598     |
+| LogiQA  | 5e-4 (0.00050) | 3500 (9.94)  | 0.613 | (None) | fp16      | 0.4686     |
+| LogiQA  | 5e-4 (0.00050) | 3500 (9.94)  | 0.613 | zs-CoT | int8      | 0.4561     |
+| LogiQA  | 5e-4 (0.00050) | 3500 (9.94)  | 0.613 | (None) | int8      | **0.4749** |
+| LogiQA  | 5e-4 (0.00050) | 3500 (9.94)  | 0.613 | (None) | int4      | 0.4257     |
+| LogiQA  | 1e-3 (0.00100) | 5000 (14.2)  | 0.471 | (None) | fp16      | 0.4366     |
+| LogiQA  | 1e-3 (0.00100) | 7000 (19.89) | 0.444 | (None) | fp16      | 0.4404     |
+
+**student-logi-lora	time per instruction**
+
+| fp16     | int8     | int4 |
+| -------- | -------- | ---- |
+| 8.088 s  | 33.681 s |      |
+| 10.534 s | 42.906 s |      |
+| 10.563 s | 41.943 s |      |
+| 10.527 s | 41.858 s |      |
+| 10.393 s |          |      |
+| 10.322 s |          |      |
+
+**student-logi-lora	推理显存消耗**
+
+| fp16 | int8 | int4 |
+| ---- | ---- | ---- |
+| 13GB | 8GB  | 6GB  |
+
+**student-math-lora**
+
+**normal**
+
+| dataset | Learning_Rate  | checkpoint   | loss  | prompt | precision | accuracy  |
+| ------- | -------------- | ------------ | ----- | ------ | --------- | --------- |
+| math23k | 5e-4 (0.00050) | 4000 (2.94)  | 0.396 | (None) | fp16      | 0.603     |
+| math23k | 5e-4 (0.00050) | 4000 (2.94)  | 0.396 | (None) | int8      | 0.615     |
+| math23k | 5e-4 (0.00050) | 5000 (4.05)  | 0.334 | (None) | fp16      | 0.619     |
+| math23k | 5e-4 (0.00050) | 5000 (4.05)  | 0.334 | (None) | int8      | 0.630     |
+| math23k | 5e-4 (0.00050) | 5500 (4.05)  | 0.314 | (None) | fp16      | 0.634     |
+| math23k | 5e-4 (0.00050) | 5500 (4.05)  | 0.314 | (None) | int8      | 0.632     |
+| math23k | 5e-4 (0.00050) | 6000 (4.42)  | 0.307 | (None) | fp16      | 0.624     |
+| math23k | 5e-4 (0.00050) | 6000 (4.42)  | 0.307 | (None) | int8      | **0.637** |
+| math23k | 5e-4 (0.00050) | 6000 (4.42)  | 0.307 | zs-CoT | fp16      | 0.619     |
+| math23k | 5e-4 (0.00050) | 6000 (4.42)  | 0.307 | zs-CoT | int8      | 0.618     |
+| math23k | 5e-4 (0.00050) | 6500 (4.78)  | 0.341 | (None) | fp16      | 0.634     |
+| math23k | 5e-4 (0.00050) | 6500 (4.78)  | 0.341 | (None) | int8      | 0.629     |
+| math23k | 1e-3 (0.00100) | 7000 (5.15)  | 0.331 | (None) | fp16      | 0.594     |
+| math23k | 1e-3 (0.00100) | 7000 (5.15)  | 0.331 | (None) | int8      | 0.585     |
+| math23k | 1e-3 (0.00100) | 11000 (8.09) | 0.267 | (None) | fp16      | 0.616     |
+| math23k | 1e-3 (0.00100) | 11000 (8.09) | 0.267 | (None) | int8      | 0.595     |
+| math23k | 1e-3 (0.00100) | 13000 (9.57) | 0.249 | (None) | fp16      | 0.582     |
+| math23k | 1e-3 (0.00100) | 13000 (9.57) | 0.249 | (None) | int8      | 0.602     |
+
+**classified**
+
+| dataset | Learning_Rate  | checkpoint    | loss  | prompt | precision | accuracy  |
+| ------- | -------------- | ------------- | ----- | ------ | --------- | --------- |
+| math23k | 1e-4 (0.00010) | 3000 (2.89)   | 0.321 | (None) | fp16      | 0.500     |
+| math23k | 1e-4 (0.00010) | 6000 (5.77)   | 0.283 | (None) | fp16      | **0.555** |
+| math23k | 1e-4 (0.00010) | 12000 (11.55) | 0.229 | (None) | fp16      | 0.550     |
+| math23k | 1e-4 (0.00010) | 15500 (14.92) | 0.246 | (None) | fp16      | 0.550     |
+| math23k | 1e-4 (0.00010) | 15500 (14.92) | 0.246 | (None) | int8      | 0.518     |
+| math23k | 5e-4 (0.00050) | 6000 (5.77)   | 0.208 | (None) | fp16      | 0.548     |
+| math23k | 5e-4 (0.00050) | 6000 (5.77)   | 0.208 | (None) | int8      | 0.549     |
+| math23k | 5e-4 (0.00050) | 6000 (5.77)   | 0.208 | zs-CoT | int8      | 0.546     |
+|         |                |               |       |        |           |           |
+
+**student-math-lora	time per instruction**
+
+| fp16    | int8     | int4 |
+| ------- | -------- | ---- |
+| 6.963 s | 30.181 s |      |
+| 6.166 s | 27.000 s |      |
+| 6.356 s | 26.397 s |      |
+| 6.117 s | 29.013 s |      |
+| 6.921 s | 27.567 s |      |
+| 6.733 s | 28.525 s |      |
+| 6.694 s |          |      |
+
+##### logi_pure_5e-4_3500
+
+| model         | dataset | prompt | precison | accuracy |
+| ------------- | ------- | ------ | -------- | -------- |
+| Chatglm2-logi | math23k | (None) | fp16     | 0.449    |
+| Chatglm2-logi | math23k | zs-CoT | fp16     | 0.457    |
+| Chatglm2-logi | math23k | (None) | int8     | 0.449    |
+| Chatglm2-logi | math23k | zs-CoT | int8     |          |
+
+##### math_normal_5e-4_6000
+
+| model         | dataset | prompt | precison | accuracy |
+| ------------- | ------- | ------ | -------- | -------- |
+| Chatglm2-math | LogiQA2 | (None) | fp16     | 0.4247   |
+| Chatglm2-math | LogiQA2 | zs-CoT | fp16     |          |
+| Chatglm2-math | LogiQA2 | (None) | int8     |          |
+| Chatglm2-math | LogiQA2 | zs-CoT | int8     |          |
 
 ```Python
 '''
@@ -50,37 +178,5 @@
  60
  "}
 '''
-```
-
-```shell
-PRE_SEQ_LEN=512
-LR=1e-2
-NUM_GPUS=1
-
-CUDA_VISIBLE_DEVICES=0 python main.py \
-    --do_train \
-    --train_file ../data/normal_train.json \
-    --validation_file ../data/normal_train.json \
-    --preprocessing_num_workers 10 \
-    --prompt_column prompt \
-    --response_column content \
-    --overwrite_cache \
-    --model_name_or_path E:\\LLM\\ChatGLM\\chatglm2-6b-int4\\ChatGLM2-6B-main\\model \
-    --output_dir ../output/logi-normal-pt-$PRE_SEQ_LEN-$LR \
-    --overwrite_output_dir \
-    --max_source_length 1024 \
-    --max_target_length 1024 \
-    --per_device_train_batch_size 1 \
-    --per_device_eval_batch_size 1 \
-    --gradient_accumulation_steps 16 \
-    --predict_with_generate \
-    --max_steps 6000 \
-    --logging_steps 10 \
-    --save_steps 300 \
-    --learning_rate $LR \
-    --pre_seq_len $PRE_SEQ_LEN \
-    --quantization_bit 4
-
-
 ```
 

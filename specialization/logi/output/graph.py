@@ -23,7 +23,7 @@ while i < n:
     s += lines[i].strip()
     i += 1
 
-plt.plot(x_axis_data, y_axis_data, 'bo--', alpha=0.5, linewidth=1, label='1e-2')  # 'bo-'表示蓝色实线，数据点实心原点标注
+plt.plot(x_axis_data, y_axis_data, 'b.-', alpha=0.5, linewidth=1, label='5e-5')  # 'bo-'表示蓝色实线，数据点实心原点标注
 # plot中参数的含义分别是横轴值，纵轴值，线的形状（'s'方块,'o'实心圆点，'*'五角星   ...，颜色，透明度,线的宽度和标签 ，
 
 plt.legend()  # 显示上面的label

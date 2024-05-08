@@ -3,7 +3,8 @@ import json
 import specialization.evaluation.logi_evaluator as le
 import specialization.logi.ptuning.api as ft_api
 
-FINE_TUNED = 0
+PT = 0  # if student model is p-tuning fine_tuned?  yes:1, no:0
+# original url:
 url = "http://127.0.0.1:8000"
 with open('data/logiqa_test.txt', 'r', encoding='utf-8')as fp:
     lines = fp.readlines()
@@ -13,14 +14,15 @@ i = int(0)
 h = [["要求：阅读文本，回答问题，从A、B、C、D四个选项中选择符合问题描述的答案。\n文本：只有干部学法，我不是干部，不用学法。\n问题：哪个以下是与上述推理结构最相似的一个？\n选项：A:考不上就考不上南大，张进了南大，所以考上了。\nB:只要通过考试，就可以考上南京大学。小张考试不及格，进不了南京大学。\nC:只有通过考试，才能考上南京大学。南京大学。张考试不及格，进不了南京大学。\nD:只有通过考试才能进入南京大学。张考试通过了，才能进南京大学学习.",
       "答案是C。\n\n只有干部学法，即干部是学法的前提；我不是干部，则不满足前提，因此推导出不用学法。C选项中通过考试是考上南京大学的前提，张考试不及格，说明没有通过考试，则不满足前提，因此推导出不能考上南京大学。结构与文本相符，所以答案是C。"]]
 '''
-write_file = "glm2_logi_test_result_pure.json"
+write_file = "glm2_logi_test_result_lora_normal_5e-3-2000.json"
 
-if FINE_TUNED == 1:
-    tokenizer, model = ft_api.load_model('normal', 500)
+if PT == 1:
+    tokenizer, model = ft_api.load_model('normal', 1500)
 
 correct_n = int(0)
 total_n = int(0)
-for line in lines:
+while i < n:
+    line = lines[i]
     json_data = json.loads(line)
     q = json_data['question']
     o = json_data['options']
@@ -37,11 +39,11 @@ for line in lines:
     '''p = "要求：阅读文本和问题，一步一步仔细思考，从A、B、C、D四个选项中选择符合问题描述的答案。\n\n文本：" + t + "\n\n问题：" + q + "\n\n选项：" + \
         "\nA:" + o1 + "\nB:" + o2 + "\nC:" + o3 + "\nD:" + o4'''
     # zs-CoT-2:
-    # p = "文本：" + t + "\n\n问题：" + q + "\n\n选项：" + "\nA:" + o1 + "\nB:" + o2 + "\nC:" + o3 + "\nD:" + o4 + "\n\n请一步一步进行逻辑推理。"
+    p = "文本：" + t + "\n\n问题：" + q + "\n\n选项：" + "\nA:" + o1 + "\nB:" + o2 + "\nC:" + o3 + "\nD:" + o4 + "\n\n请一步一步进行逻辑推理。"
     # None-prompt
-    p = "文本：" + t + "\n\n问题：" + q + "\n\n选项：" + "\nA:" + o1 + "\nB:" + o2 + "\nC:" + o3 + "\nD:" + o4
+    # p = "文本：" + t + "\n\n问题：" + q + "\n\n选项：" + "\nA:" + o1 + "\nB:" + o2 + "\nC:" + o3 + "\nD:" + o4
     d = {"prompt": p, "history": []}
-    if FINE_TUNED == 0:
+    if PT == 0:
         r = requests.post(url, data=json.dumps(d))
         res_content = json.loads(r.text)['response']
     else:

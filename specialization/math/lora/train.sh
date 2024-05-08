@@ -1,0 +1,18 @@
+CUDA_VISIBLE_DEVICES=0 python src/train_bash.py \
+    --stage sft \
+    --model_name_or_path /gpfsdata/home/wangjunzhe/CoT_distillation/model/ \
+    --do_train \
+    --dataset math23k_normal \
+    --finetuning_type lora \
+    --output_dir ../output/math23k-normal-lora-5e-4 \
+    --max_source_length 1024 \
+    --max_target_length 1024 \
+    --per_device_train_batch_size 16 \
+    --gradient_accumulation_steps 1 \
+    --lr_scheduler_type cosine \
+    --logging_steps 10 \
+    --save_steps 500 \
+    --learning_rate 5e-4 \
+    --num_train_epochs 5.0 \
+    --plot_loss \
+    --fp16

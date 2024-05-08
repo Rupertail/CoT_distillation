@@ -3,13 +3,14 @@ import json
 with open('valid_prompts.json', 'r', encoding='utf-8')as fp:
     lines = fp.readlines()
 n = len(lines)
-write_file = 'normal_train.json'
+write_file = 'normal_train_pure.json'
 
 write_lines = []
 for i in range(n):
     s = lines[i]
     json_data = json.loads(s)
-    prompt = json_data['prompt']
+    # prompt = json_data['prompt']
+    prompt = json_data['prompt'][:-14]
     content = json_data['content']
     point = json_data['point']
     if point == 1 and len(prompt) + len(content) < 1500:
